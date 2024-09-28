@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>Chap2 Demo</title>
+		<script id="vertex-shader-b" type="x-shader/x-vertex">
+			#version 300 es
+			in vec3 vPosition;
+			in vec4 aColor;
+			out vec4 vColor;
+
+			void main(){
+				gl_Position = vec4( vPosition, 1.0 );
+				vColor = aColor;
+			}
+		</script>
+		<script id="fragment-shader-b" type="x-shader/x-fragment">
+			#version 300 es
+			precision mediump float;
+			
+			in vec4 vColor;
+			out vec4 fColor;
+			void main(){
+				fColor = vColor;
+			}
+		</script>
+
+		<script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../js/common/initShaders.js"></script>
+		<script type="text/javascript" src="../js/common/gl-Matrix.js"></script>
+
+		<script type="text/javascript" src="../js/ch02/b.js"></script>
+
+		<script>
+			const {
+				vec3
+			} = glMatrix;
+			window.onload = function() {
+				AppB.init();
+			};
+		</script>
+	</head>
+
+	<body>
+		<h2>Sierpinski Gasket in 3D</h2>
+		<canvas id="gl-canvas-b" width="512" height="512">你的浏览器不支持HTML5 canvas元素</canvas>
+		<!-- 滑块控件 -->
+		<div>
+			<label for="subdivision-slider-b">剖分层次：</label>
+			<input type="range" id="subdivision-slider-b" min="0" max="7" step="1">
+			<span id="slider-value-b">4</span>
+		</div>
+	</body>
+
+</html>

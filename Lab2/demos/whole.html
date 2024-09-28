@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>Chap2 Demo Sierpinski Gasket </title>
+		<style>
+			.container {
+				display: flex;
+				justify-content: space-around;
+				/* 或使用 'space-between' 根据需要 */
+				align-items: center;
+				/* 垂直居中对齐 */
+			}
+
+			.canvas-container {
+				text-align: center;
+				/* 水平居中标题和滑块 */
+			}
+		</style>
+
+		<script id="vertex-shader-a" type="x-shader/x-vertex">
+			#version 300 es
+			in vec4 vPosition;
+			void main(){
+				gl_Position = vPosition;
+			}
+		</script>
+		<script id="fragment-shader-a" type="x-shader/x-fragment">
+			#version 300 es
+			precision mediump float;
+			out vec4 fColor;
+			void main(){
+				fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+			}
+		</script>
+
+		<script id="vertex-shader-b" type="x-shader/x-vertex">
+			#version 300 es
+			in vec3 vPosition;
+			in vec4 aColor;
+			out vec4 vColor;
+
+			void main(){
+				gl_Position = vec4( vPosition, 1.0 );
+				vColor = aColor;
+			}
+		</script>
+		<script id="fragment-shader-b" type="x-shader/x-fragment">
+			#version 300 es
+			precision mediump float;
+			
+			in vec4 vColor;
+			out vec4 fColor;
+			void main(){
+				fColor = vColor;
+			}
+		</script>
+
+		<script id="vertex-shader-c" type="x-shader/x-vertex">
+			#version 300 es
+			in vec4 vPosition;
+			void main(){
+				gl_Position = vPosition;
+			}
+		</script>
+		<script id="fragment-shader-c" type="x-shader/x-fragment">
+			#version 300 es
+			precision mediump float;
+			out vec4 fColor;
+			void main(){
+				fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+			}
+		</script>
+
+		<script id="vertex-shader-d" type="x-shader/x-vertex">
+			#version 300 es
+			in vec4 vPosition;
+			void main(){
+				gl_Position = vPosition;
+			}
+		</script>
+		<script id="fragment-shader-d" type="x-shader/x-fragment">
+			#version 300 es
+			precision mediump float;
+			out vec4 fColor;
+			void main(){
+				fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+			}
+		</script>
+
+		<script id="vertex-shader-e" type="x-shader/x-vertex">
+			#version 300 es
+			in vec4 vPosition;
+			void main(){
+				gl_Position = vPosition;
+			}
+		</script>
+		<script id="fragment-shader-e" type="x-shader/x-fragment">
+			#version 300 es
+			precision mediump float;
+			out vec4 fColor;
+			void main(){
+				fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+			}
+		</script>
+
+		<script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../js/common/initShaders.js"></script>
+		<script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+		<script type="text/javascript" src="../js/ch02/a.js"></script>
+		<script type="text/javascript" src="../js/ch02/b.js"></script>
+		<script type="text/javascript" src="../js/ch02/c.js"></script>
+		<script type="text/javascript" src="../js/ch02/d.js"></script>
+		<script type="text/javascript" src="../js/ch02/e.js"></script>
+
+		<script>
+			window.onload = function() {
+				AppA.init();
+				AppB.init();
+				AppC.init();
+				AppD.init();
+				AppE.init();
+			};
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="canvas-container">
+				<h2>Sierpinski Gasket in 2D(任务a)</h2>
+				<canvas id="gl-canvas-a" width="600" height="600">你的浏览器不支持HTML5 canvas元素</canvas>
+				<!-- 滑块控件 -->
+				<div>
+					<label for="subdivision-slider-a">剖分层次：</label>
+					<input type="range" id="subdivision-slider-a" min="0" max="7" step="1">
+					<span id="slider-value-a">4</span>
+				</div>
+			</div>
+
+			<div class="canvas-container">
+				<h2>Sierpinski Gasket in 3D(任务b)</h2>
+				<canvas id="gl-canvas-b" width="600" height="600">你的浏览器不支持HTML5 canvas元素</canvas>
+				<!-- 滑块控件 -->
+				<div>
+					<label for="subdivision-slider-b">剖分层次：</label>
+					<input type="range" id="subdivision-slider-b" min="0" max="7" step="1">
+					<span id="slider-value-b">4</span>
+				</div>
+			</div>
+
+			<div class="canvas-container">
+				<h2>Triangle Tessellation(任务c)</h2>
+				<canvas id="gl-canvas-c" width="600" height="600">你的浏览器不支持HTML5 canvas元素</canvas>
+				<!-- 滑块控件 -->
+				<div>
+					<label for="subdivision-slider-c">剖分层次：</label>
+					<input type="range" id="subdivision-slider-c" min="0" max="7" step="1">
+					<span id="slider-value-c">4</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="canvas-container">
+				<h2>Triangle Tessellation(任务d)</h2>
+				<canvas id="gl-canvas-d" width="600" height="600">你的浏览器不支持HTML5 canvas元素</canvas>
+				<!-- 滑块控件 -->
+				<div>
+					<label for="subdivision-slider-d">剖分层次：</label>
+					<input type="range" id="subdivision-slider-d" min="0" max="7" step="1">
+					<span id="slider-value-d">4</span>
+				</div>
+
+				<div>
+					<label for="subdivision-slider-theta-d">旋转角度（绕Z轴逆时针）：</label>
+					<input type="range" id="subdivision-slider-theta-d" min="0" max="360" step="1">
+					<span id="slider-value-theta-d">0</span>°
+				</div>
+			</div>
+
+			<div class="canvas-container">
+				<h2>Triangle Tessellation(任务e)</h2>
+				<canvas id="gl-canvas-e" width="600" height="600">你的浏览器不支持HTML5 canvas元素</canvas>
+				<!-- 滑块控件 -->
+				<div>
+					<label for="subdivision-slider-e">剖分层次：</label>
+					<input type="range" id="subdivision-slider-e" min="0" max="7" step="1">
+					<span id="slider-value-e">4</span>
+				</div>
+
+				<!-- 滑块控件 -->
+				<div>
+					<label for="subdivision-slider-theta-e">旋转角度（绕Z轴逆时针）：</label>
+					<input type="range" id="subdivision-slider-theta-e" min="0" max="360" step="1">
+					<span id="slider-value-theta-e">0</span>°
+				</div>
+			</div>
+		</div>
+		</div>
+
+	</body>
+</html>
