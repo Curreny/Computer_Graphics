@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>计算机图形学作业 - 动画作品</title>
+		<style>
+			canvas {
+				border: 1px solid black;
+				display: block;
+				margin: 0 auto;
+			}
+
+			body {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>旋转的正方形与移动的圆形</h1>
+		<canvas id="animationCanvas" width="600" height="400"></canvas>
+		<p>通过方向键"上下左右"控制圆形移动的速度</p>
+
+		<script>
+			const canvas = document.getElementById('animationCanvas');
+			const ctx = canvas.getContext('2d');
+
+			// 动画元素 - 正方形
+			let squareAngle = 0;
+			let squareSpeed = 0.03;
+
+			// 动画元素 - 圆形
+			let circleX = 300;
+			let circleY = 200;
+			let circleRadius = 30;
+			let circleSpeedX = 2;
+			let circleSpeedY = 1.5;
+
+			// 交互行为 - 使用方向键控制圆形移动速度
+			document.addEventListener('keydown', function(event) {
+				if (event.key === 'ArrowUp') {
+					circleSpeedY -= 0.2; // 向上移动
+				} else if (event.key === 'ArrowDown') {
+					circleSpeedY += 0.2; // 向下移动
+				} else if (event.key === 'ArrowLeft') {
+					circleSpeedX -= 0.2; // 向左移动
+				} else if (event.key === 'ArrowRight') {
+					circleSpeedX += 0.2; // 向右移动
+				}
+			});
+
+			function drawSquare() {
+				const squareSize = 80;
+				ctx.save();
+				ctx.translate(150, 150); // 正方形中心点
+				ctx.rotate(squareAngle); // 旋转
+				ctx.fillStyle = 'red';
+				ctx.fillRect(-squareSize / 2, -squareSize / 2, squareSize, squareSize);
+				ctx.restore();
+			}
+
+			function drawCircle() {
+				ctx.beginPath();
+				ctx.arc(circleX, circleY, circleRadius, 0, 2 * Math.PI);
+				ctx.fillStyle = 'blue';
+				ctx.fill();
+				ctx.closePath();
+			}
+
+			function update() {
+				// 更新正方形角度
+				squareAngle += squareSpeed;
+
+				// 更新圆形位置
+				circleX += circleSpeedX;
+				circleY += circleSpeedY;
+
+				// 碰撞检测，防止圆形移出画布
+				if (circleX + circleRadius > canvas.width || circleX - circleRadius < 0) {
+					circleSpeedX = -circleSpeedX;
+				}
+				if (circleY + circleRadius > canvas.height || circleY - circleRadius < 0) {
+					circleSpeedY = -circleSpeedY;
+				}
+			}
+
+			function draw() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
+				drawSquare(); // 绘制旋转正方形
+				drawCircle(); // 绘制移动圆形
+			}
+
+			function animate() {
+				update(); // 更新动画状态
+				draw(); // 绘制动画帧
+				requestAnimationFrame(animate); // 循环调用动画
+			}
+
+			// 初始化动画
+			animate();
+		</script>
+	</body>
+</html>
