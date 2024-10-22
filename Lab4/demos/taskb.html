@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>Chap3 Demo-Rotating Square</title>
+		<script id="rot-v-shader" type="x-shader/x-vertex">
+			#version 300 es
+        in vec4 vPosition;
+        uniform float theta;
+        uniform vec2 translation;  // 添加 translation uniform，用于正方形平移
+
+        void main() {
+            float u = cos(theta);
+            float v = sin(theta);
+
+            vec2 rotatedPosition = vec2(
+                vPosition.x * u - vPosition.y * v,
+                vPosition.x * v + vPosition.y * u
+            );
+
+            // 应用旋转
+            gl_Position = vec4(rotatedPosition + translation, 0.0, 1.0);
+        }
+    </script>
+
+		<script id="rot-f-shader" type="x-shader/x-fragment">
+			#version 300 es
+        precision mediump float;
+        out vec4 fColor;
+        void main() {
+            fColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }
+    </script>
+
+		<script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../js/common/initShaders.js"></script>
+		<script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+		<script type="text/javascript" src="../js/ch04/b.js"></script>
+	</head>
+
+	<body onload="initRotSquare()">
+		<h2>Rotating Square</h2>
+
+		<!-- 控制画布平移的位置 -->
+		<label for="xPos">X Position: </label>
+		<input type="number" id="xPos" value="0" step="10"><br><br>
+		<label for="yPos">Y Position: </label>
+		<input type="number" id="yPos" value="0" step="10"><br><br>
+		<button onclick="moveCanvas()">Move Canvas</button><br><br>
+
+		<!-- 控制画布的平移 -->
+		<button onclick="moveCanvasX(10)">Move Canvas Right</button>
+		<button onclick="moveCanvasX(-10)">Move Canvas Left</button>
+		<button onclick="moveCanvasY(10)">Move Canvas Down</button>
+		<button onclick="moveCanvasY(-10)">Move Canvas Up</button>
+
+		<canvas id="rot-canvas" width="312" height="312">你的浏览器不支持HTML5 canvas元素</canvas>
+	</body>
+
+</html>
