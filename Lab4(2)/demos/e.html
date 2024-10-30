@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>Interactive WebGL Demo</title>
+	<!-- 顶点着色器和片元着色器代码 -->
+	<script id="vertex-shader-triangle" type="x-shader/x-vertex">
+		#version 300 es
+		in vec4 vPosition;
+		uniform float uScale; // 缩放控制参数
+	
+		void main() {
+			gl_Position = vec4(uScale * vPosition.xy, vPosition.z, vPosition.w);
+		}
+	</script>
+
+	<script id="fragment-shader-triangle" type="x-shader/x-fragment">
+		#version 300 es
+		precision mediump float;
+		out vec4 fColor;
+	
+		void main() {
+			fColor = vec4(0.0, 1.0, 0.0, 1.0); // 绿色
+		}
+	</script>
+
+
+	<script id="vertex-shader-square" type="x-shader/x-vertex">
+		#version 300 es
+		in vec4 vPosition;
+		uniform float theta;
+
+		void main()
+		{
+			float u = cos( theta );
+			float v = sin( theta );
+
+			gl_Position.x = vPosition.x * u - vPosition.y * v;
+			gl_Position.y = vPosition.x * v + vPosition.y * u;
+			gl_Position.z = 0.0;
+			gl_Position.w = 1.0;
+		}
+	</script>
+	<script id="fragment-shader-square" type="x-shader/x-fragment">
+		#version 300 es
+		precision mediump float;
+		out vec4 fColor;
+		
+		void main()
+		{
+			fColor = vec4( 1.0, 0.0, 1.0, 1.0 );
+		}
+	</script>
+
+
+	<script id="rtvshader" type="x-shader/x-vertex">
+		#version 300 es
+		in vec4 vPosition;
+		in vec4 vColor;
+		out vec4 aColor;
+		uniform vec3 theta;
+
+		void main()
+		{
+			//compute the sins and cos of theta for each of the three axis in one computation
+				vec3 angles = radians( theta );
+			vec3 cost = cos( theta );
+			vec3 sint = sin( theta );
+
+			mat4 rx = mat4(  1.0,  0.0,  0.0, 0.0,
+							0.0,  cost.x,  sint.x, 0.0,
+							0.0,  -sint.x,  cost.x, 0.0,
+							0.0,  0.0,  0.0, 1.0
+							);
+
+			mat4 ry = mat4(  cost.y,  0.0, -sint.y,  0.0,
+							0.0,  1.0,  0.0,  0.0,
+							sint.y,  0.0,  cost.y,  0.0,
+							0.0,  0.0,  0.0,  1.0
+							);
+
+			mat4 rz = mat4(  cost.z,  sint.z,  0.0,  0.0,
+							-sint.z,  cost.z,  0.0,  0.0,
+							0.0,  0.0,  1.0,  0.0,
+							0.0,  0.0,  0.0,  1.0
+							);
+
+			aColor = vColor;
+			gl_Position = rz * ry * rx * vPosition;
+			gl_Position.z = -gl_Position.z;
+		}
+	</script>
+
+	<script id="rtfshader" type="x-shader/x-fragment">
+		#version 300 es
+		precision mediump float;
+		in vec4 aColor;
+		out vec4 fColor;
+
+		void main()
+		{
+			fColor = aColor;
+		}
+	</script>
+
+	<script id="rot-v-shader" type="x-shader/x-vertex">
+		#version 300 es
+		in vec4 vPosition;
+		uniform vec2 uTranslate; // 新增平移变量
+
+		void main()
+		{
+			gl_Position.x = vPosition.x + uTranslate.x; // 应用平移
+			gl_Position.y = vPosition.y + uTranslate.y;
+			gl_Position.z = 0.0;
+			gl_Position.w = 1.0;
+		}
+	</script>
+
+	<script id="rot-f-shader" type="x-shader/x-fragment">
+		#version 300 es
+		precision mediump float;
+		out vec4 fColor;
+			
+		void main()
+		{
+			fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+		}
+	</script>
+
+	<!-- 一组相关的JS库 -->
+	<script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+	<script type="text/javascript" src="../js/common/initShaders.js"></script>
+	<script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+	<script type="text/javascript" src="../js/ch04/triangle.js"></script>
+	<script type="text/javascript" src="../js/ch04/square.js"></script>
+	<script type="text/javascript" src="../js/ch04/cube.js"></script>
+	<script type="text/javascript" src="../js/ch04/circle.js"></script>
+
+	<script>
+		window.onload = function () {
+			TriangleApp.init();
+			SquareApp.init();
+			CubeApp.init();
+			CircleApp.init();
+		}
+	</script>
+</head>
+
+<body>
+
+	<div>
+		<span>
+			<canvas id="triangle-canvas" style="border:none" width="400" height="400"></canvas>
+		</span>
+
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span>
+			<canvas id="square-canvas" style="border:none;" width="400" height="400"></canvas>
+		</span>
+	</div>
+	<div>
+		<span>
+			<canvas id="rot-canvas" style="border:none;" width="400" height="400"></canvas>
+		</span>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span>
+			<canvas id="rtcb-canvas" style="border:none" width="400" height="400">
+				你的浏览器不支持HTML5 canvas元素
+			</canvas>
+			<button id="xbutton">Rotate X</button>
+			<button id="ybutton">Rotate Y</button>
+		</span>
+
+	</div>
+</body>
+
+</html>
