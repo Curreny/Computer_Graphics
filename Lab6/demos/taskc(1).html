@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Shaded Cube With Phong Model</title>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+		in vec4 vPosition;
+		in vec3 vNormal;
+		out vec4 aColor;
+
+		uniform vec4 ambientProduct, diffuseProduct, specularProduct;
+		uniform mat4 modelViewMatrix;
+		uniform mat4 projectionMatrix;
+		uniform vec4 lightPosition;
+		uniform float shininess;
+
+		void main()
+		{
+			vec3 pos = -( modelViewMatrix * vPosition ).xyz;
+
+			// fixed light position
+			vec3 light = lightPosition.xyz;
+			vec3 L = normalize( light - pos );
+
+			vec3 E = normalize( -pos );
+			vec3 H = normalize( L + E );
+
+			vec4 NN = vec4( vNormal, 0 );
+
+			// transform vertex normal into eye coordinates
+			vec3 N = normalize( ( modelViewMatrix * NN ).xyz );
+
+			// compute terms in the illumination equation
+
+			vec4 ambient = ambientProduct;
+
+			float Kd = max( dot( L, N ), 0.0 );
+			vec4 diffuse = Kd * diffuseProduct;
+
+			float Ks = pow( max( dot( N, H ), 0.0 ), shininess );
+			vec4 specular = Ks * specularProduct;
+
+			if( dot( L, N ) < 0.0 ){
+				specular = vec4( 0.0, 0.0, 0.0, 1.0 );
+			}
+
+			gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+
+			aColor = ambient + diffuse + specular;
+
+			aColor.a = 1.0;
+		}
+	</script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+		precision mediump float;
+
+		in vec4 aColor;
+		out vec4 fColor;
+
+		void main()
+		{
+			fColor = aColor;
+		}
+	</script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix.js"></script>
+
+    <script type="text/javascript" src="../js/ch06/c(1).js"></script>
+</head>
+
+<body onload="initCube()">
+    <h1>立方体着色</h1>
+    
+    <canvas id="gl-canvas" width="800" height="800" style="border: 1px solid black;">
+        你的浏览器不支持HTML5 Canvas元素
+    </canvas>
+	<br>
+    <button id="ButtonX">Rotate X</button>
+    <button id="ButtonY">Rotate Y</button>
+    <button id="ButtonZ">Rotate Z</button>
+    <button id="ButtonT">Toggle Rotation</button>
+
+	<div style="display: flex;">
+		<div>
+			<h2>材质调节</h2>
+			<label>环境光反射系数: <input type="range" id="ambientCoefficient" min="0" max="1" step="0.01" value="0.2"></label><br>
+			<label>漫反射系数:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="range" id="diffuseCoefficient" min="0" max="1" step="0.01" value="0.8"></label><br>
+			<label>高光反射系数: &nbsp;&nbsp;&nbsp;<input type="range" id="specularCoefficient" min="0" max="1" step="0.01" value="0.8"></label><br>
+			<label>高光亮度系数: &nbsp;&nbsp;&nbsp;<input type="range" id="shininessCoefficient" min="1" max="100" step="1" value="100"></label><br>
+			<label>材质颜色R: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="range" id="materialColorR" min="0" max="1" step="0.01" value="1.0"></label><br>
+			<label>材质颜色G: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="range" id="materialColorG" min="0" max="1" step="0.01" value="0.8"></label><br>
+			<label>材质颜色B: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="range" id="materialColorB" min="0" max="1" step="0.01" value="0.0"></label><br>
+		</div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<div>
+			<h2>光源调节</h2>
+			<label>光源位置X: <input type="range" id="lightPosX" min="-10" max="10" step="0.1" value="1.0"></label><br>
+			<label>光源位置Y: <input type="range" id="lightPosY" min="-10" max="10" step="0.1" value="1.0"></label><br>
+			<label>光源位置Z: <input type="range" id="lightPosZ" min="-10" max="10" step="0.1" value="1.0"></label><br>
+			<label>光源颜色R: <input type="range" id="lightColorR" min="0" max="1" step="0.01" value="1.0"></label><br>
+			<label>光源颜色G: <input type="range" id="lightColorG" min="0" max="1" step="0.01" value="1.0"></label><br>
+			<label>光源颜色B: <input type="range" id="lightColorB" min="0" max="1" step="0.01" value="1.0"></label><br>
+		</div>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+        in vec4 vPosition;
+        in vec3 vNormal;
+        out vec4 aColor;
+
+        uniform vec4 ambientProduct, diffuseProduct, specularProduct;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        uniform vec4 lightPosition;
+        uniform float shininess;
+
+        void main()
+        {
+            vec3 pos = -( modelViewMatrix * vPosition ).xyz;
+            vec3 light = lightPosition.xyz;
+            vec3 L = normalize( light - pos );
+            vec3 E = normalize( -pos );
+            vec3 H = normalize( L + E );
+            vec4 NN = vec4( vNormal, 0 );
+            vec3 N = normalize( ( modelViewMatrix * NN ).xyz );
+
+            vec4 ambient = ambientProduct;
+            float Kd = max( dot( L, N ), 0.0 );
+            vec4 diffuse = Kd * diffuseProduct;
+            float Ks = pow( max( dot( N, H ), 0.0 ), shininess );
+            vec4 specular = Ks * specularProduct;
+
+            if( dot( L, N ) < 0.0 ){
+                specular = vec4( 0.0, 0.0, 0.0, 1.0 );
+            }
+
+            gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+            aColor = ambient + diffuse + specular;
+            aColor.a = 1.0;
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+        precision mediump float;
+    
+        in vec4 aColor;
+        out vec4 fColor;
+    
+        void main()
+        {
+            fColor = aColor;
+        }
+    </script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix.js"></script>
+    <script type="text/javascript" src="../js/common/objloader.js"></script>
+
+    <script type="text/javascript" src="../js/ch06/b.js"></script>
+</head>
+
+<body onload="initSphere()">
+    <h1>显示一个球体Phong光照模型</h1>
+    <table style="border:1px solid black">
+        <caption align="bottom">按键设置</caption>
+        <tr>
+            <td>a</td>
+            <td>d</td>
+            <td>w</td>
+            <td>s</td>
+            <td>z</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>绕x轴正向转动</td>
+            <td>绕x轴负向转动</td>
+            <td>绕y轴正向转动</td>
+            <td>绕y轴负向转动</td>
+            <td>绕z轴正向转动</td>
+            <td>绕z轴负向转动</td>
+        </tr>
+        <tr>
+            <td>h</td>
+            <td>k</td>
+            <td>u</td>
+            <td>j</td>
+            <td>m</td>
+            <td>n</td>
+        </tr>
+        <tr>
+            <td>沿x轴负向移动</td>
+            <td>沿x轴正向移动</td>
+            <td>沿y轴正向移动</td>
+            <td>沿y轴负向移动</td>
+            <td>沿z轴正向移动</td>
+            <td>沿z轴负向移动</td>
+        </tr>
+        <tr>
+            <td>v</td>
+            <td>b</td>
+        </tr>
+        <tr>
+            <td>增加分块</td>
+            <td>减小分块</td>
+        </tr>
+    </table>
+    
+    <canvas id="gl-canvas" width="600" height="600" style="border: 1px solid black;">
+        你的浏览器不支持HTML5 Canvas元素
+    </canvas>
+    <div>
+        <label for="subdivideSlider">选择球体的细分次数: <span id="subdivideValue">4</span></label>
+        <input type="range" id="subdivideSlider" min="0" max="8" value="4" step="1" oninput="updateSubdivision(this.value)">
+    </div>
+</body>
+
+</html>

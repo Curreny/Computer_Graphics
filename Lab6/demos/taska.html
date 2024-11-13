@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+		in vec4 vPosition;
+
+		uniform mat4 modelViewMatrix;
+		uniform mat4 projectionMatrix;
+
+		void main()
+		{
+			gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+		}
+	</script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+		precision mediump float;
+
+		out vec4 fColor;
+		void main()
+		{
+			fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+		}
+	</script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix.js"></script>
+    <script type="text/javascript" src="../js/common/objloader.js"></script>
+
+    <script type="text/javascript" src="../js/ch06/a.js"></script>
+</head>
+
+<body onload="initSphere()">
+    <h1>显示一个球体线框模型</h1>
+    <table style="border:1px solid black">
+        <caption align="bottom">按键设置</caption>
+        <tr>
+            <td>a</td>
+            <td>d</td>
+            <td>w</td>
+            <td>s</td>
+            <td>z</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>绕x轴正向转动</td>
+            <td>绕x轴负向转动</td>
+            <td>绕y轴正向转动</td>
+            <td>绕y轴负向转动</td>
+            <td>绕z轴正向转动</td>
+            <td>绕z轴负向转动</td>
+        </tr>
+        <tr>
+            <td>h</td>
+            <td>k</td>
+            <td>u</td>
+            <td>j</td>
+            <td>m</td>
+            <td>n</td>
+        </tr>
+        <tr>
+            <td>沿x轴负向移动</td>
+            <td>沿x轴正向移动</td>
+            <td>沿y轴正向移动</td>
+            <td>沿y轴负向移动</td>
+            <td>沿z轴正向移动</td>
+            <td>沿z轴负向移动</td>
+        </tr>
+        <tr>
+            <td>v</td>
+            <td>b</td>
+        </tr>
+        <tr>
+            <td>增加分块</td>
+            <td>减小分块</td>
+        </tr>
+    </table>
+    
+    <canvas id="gl-canvas" width="600" height="600" style="border: 1px solid black;">
+        你的浏览器不支持HTML5 Canvas元素
+    </canvas>
+    <div>
+        <label for="subdivideSlider">选择球体的细分次数: <span id="subdivideValue">4</span></label>
+        <input type="range" id="subdivideSlider" min="0" max="6" value="4" step="1" oninput="updateSubdivision(this.value)">
+    </div>
+</body>
+
+</html>
