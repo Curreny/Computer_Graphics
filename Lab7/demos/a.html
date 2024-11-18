@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Chap7 Demo 4 Textured Cube with Multiple Textures</title>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+in vec4 vPosition;
+in vec4 vColor;
+in vec2 vTexCoord;
+
+out vec4 aColor;
+out vec2 aTexCoord;
+
+uniform vec3 theta;
+
+    void main()
+    {
+        vec3 angles = radians( theta );
+        vec3 c = cos( angles );
+        vec3 s = sin( angles );
+
+        mat4 rx = mat4( 1.0,  0.0,  0.0, 0.0,
+                        0.0,  c.x,  s.x, 0.0,
+                        0.0, -s.x,  c.x, 0.0,
+                        0.0,  0.0,  0.0, 1.0 );
+        mat4 ry = mat4( c.y,  0.0, -s.y, 0.0,
+                        0.0,  1.0,  0.0, 0.0,
+                        s.y,  0.0,  c.y, 0.0,
+                        0.0,  0.0,  0.0, 1.0 );
+        mat4 rz = mat4(  c.z,  s.z, 0.0, 0.0,
+                        -s.z,  c.z, 0.0, 0.0,
+                            0.0,  0.0, 1.0, 0.0,
+                            0.0,  0.0, 0.0, 1.0 );
+
+        aColor = vColor;
+        aTexCoord = vTexCoord;
+        gl_Position = rz * ry * rx * vPosition;
+        gl_Position.z = -gl_Position.z;
+    }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es    
+precision mediump float;
+	
+in vec4 aColor;
+in vec2 aTexCoord;
+
+out vec4 fColor;
+
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+
+    void main()
+    {
+        fColor = aColor * (texture( texture1, aTexCoord ) * texture( texture2, aTexCoord ));
+    }	
+    </script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+    <script type="text/javascript" src="../js/ch07/a.js"></script>
+</head>
+
+<body>
+    <h1>带纹理的立方体</h1>
+    <canvas id="gl-canvas" width="600" height="600">
+        你的浏览器不支持HTML5 canvas元素
+    </canvas>
+
+    <button id="ButtonX">Rotate X</button>
+    <button id="ButtonY">Rotate Y</button>
+    <button id="ButtonZ">Rotate Z</button>
+</body>
+</html>
