@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Chap7 Demo 5 Cube with Reflection Map</title>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+out vec3 R;
+
+in vec4 vPosition;
+in vec4 vNormal;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat3 normalMatrix;
+
+void main()
+{
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+
+    vec3 eyePos = ( modelViewMatrix * vPosition ).xyz;
+    vec3 N = normalize( normalMatrix * vNormal.xyz );
+    R = reflect( eyePos, N );
+}
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision mediump float;
+
+in vec3 R;
+uniform samplerCube texMap;
+
+out vec4 fColor;
+void main()
+{
+    vec4 texColor = texture( texMap, R );
+    fColor = texColor;
+}
+    </script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+    <script type="text/javascript" src="../js/ch07/a(1).js"></script>
+</head>
+
+<body>
+    <h1>环境映射立方体</h1>
+    <canvas id="gl-canvas" width="600" height="600">
+        你的浏览器不支持HTML5 canvas元素
+    </canvas>
+    <br>
+    <button id="ButtonX">Rotate X</button>
+    <button id="ButtonY">Rotate Y</button>
+    <button id="ButtonZ">Rotate Z</button>
+    <button id="ButtonT">Toggle Rotation</button>
+    <span id="skyboxSelect"></span>
+    <select id="skyboxSelector">
+        <option value="skybox1">Skybox 1</option>
+        <option value="skybox2">Skybox 2</option>
+        <option value="skybox3">Skybox 3</option>
+        <option value="skybox4">Skybox 4</option>
+        <option value="skybox5">Skybox 5</option>
+        <option value="skybox6">Skybox 6</option>
+    </select>
+
+    <script type="text/javascript">
+        document.getElementById('skyboxSelector').addEventListener('change', function() {
+            var skybox = this.value;
+            configureCubeMap(skybox);
+        });
+        
+    </script>
+</body>
+</html>

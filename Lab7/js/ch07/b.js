@@ -2,7 +2,7 @@
 
 const { vec3, vec4 } = glMatrix;
 
-var WebGLApp = {
+var WebGLAppA = {
     canvas: null,
     gl: null,
     program: null,
