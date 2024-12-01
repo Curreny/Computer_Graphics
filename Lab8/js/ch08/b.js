@@ -147,12 +147,12 @@ window.onload = function initWindow() {
     configureCubeMapTexture();
 
     if (texture === null) {
-        var url = "../../images/world.jpg";
+        var url = "../images/world.jpg";
         configureTexture(url);
     }
 
     if (bumpTexture === null) {
-        var url = "../../images/roof.jpg";
+        var url = "../images/roof.jpg";
         configureBumpTexture(url);
     }
 
@@ -257,12 +257,12 @@ function configureBumpTexture(url) {
 }
 
 var faceUrl = [
-    '../../images/skybox1/posx.jpg',
-    '../../images/skybox1/negx.jpg',
-    '../../images/skybox1/negy.jpg',
-    '../../images/skybox1/posy.jpg',
-    '../../images/skybox1/posz.jpg',
-    '../../images/skybox1/negz.jpg',
+    '../images/skybox1/posx.jpg',
+    '../images/skybox1/negx.jpg',
+    '../images/skybox1/negy.jpg',
+    '../images/skybox1/posy.jpg',
+    '../images/skybox1/posz.jpg',
+    '../images/skybox1/negz.jpg',
 ];
 
 var cubemap_image_cnt = 0;
@@ -457,12 +457,12 @@ function initInterface() {
     document.getElementById("skyboxSelect").addEventListener("change", function (event) {
         var selectedSkybox = event.target.value;
         faceUrl = [
-            `../../images/${selectedSkybox}/posx.jpg`,
-            `../../images/${selectedSkybox}/negx.jpg`,
-            `../../images/${selectedSkybox}/negy.jpg`,
-            `../../images/${selectedSkybox}/posy.jpg`,
-            `../../images/${selectedSkybox}/posz.jpg`,
-            `../../images/${selectedSkybox}/negz.jpg`,
+            `../images/${selectedSkybox}/posx.jpg`,
+            `../images/${selectedSkybox}/negx.jpg`,
+            `../images/${selectedSkybox}/negy.jpg`,
+            `../images/${selectedSkybox}/posy.jpg`,
+            `../images/${selectedSkybox}/posz.jpg`,
+            `../images/${selectedSkybox}/negz.jpg`,
         ];
         configureCubeMapTexture();
     });

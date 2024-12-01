@@ -38,12 +38,12 @@ function configureCubeMap(skybox) {
 	gl.bindTexture(gl.TEXTURE_CUBE_MAP, cubeMap);
 
 	const faces = [
-		{ target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: `../../images/${skybox}/posx.jpg` },
-		{ target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: `../../images/${skybox}/negx.jpg` },
-		{ target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: `../../images/${skybox}/posy.jpg` },
-		{ target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: `../../images/${skybox}/negy.jpg` },
-		{ target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: `../../images/${skybox}/posz.jpg` },
-		{ target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: `../../images/${skybox}/negz.jpg` },
+		{ target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: `../images/${skybox}/posx.jpg` },
+		{ target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: `../images/${skybox}/negx.jpg` },
+		{ target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: `../images/${skybox}/posy.jpg` },
+		{ target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: `../images/${skybox}/negy.jpg` },
+		{ target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: `../images/${skybox}/posz.jpg` },
+		{ target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: `../images/${skybox}/negz.jpg` },
 	];
 
 	faces.forEach((face) => {
