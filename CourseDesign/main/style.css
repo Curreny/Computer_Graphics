@@ -1,0 +1,68 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+}
+
+#world-ui-div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#world-ui-div select,
+#world-ui-div input[type="checkbox"],
+#world-ui-div button {
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#world-ui-div select {
+    background-color: #fff;
+    color: #333;
+}
+
+#world-ui-div input[type="checkbox"] {
+    width: auto;
+    height: auto;
+}
+
+#world-ui-div button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+#world-ui-div button:hover {
+    background-color: #0056b3;
+}
+
+#world-ui-div button:active {
+    background-color: #004085;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+}
+
+#world-ui-div span {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.head-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.centered-flex-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

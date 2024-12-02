@@ -1,0 +1,17 @@
+在此列出所有归属，包括 “自我归属”：
+
+Playground FBX 模型由 theJamieAnne 从 https://sketchfab.com/3d-models/playground-7d547122a8eb44f0a615492f454c1cf0 下载
+
+天空盒纹理下载自 https://polyhaven.com/a/lilienstein
+
+起重机和挖掘机由课程工作人员制作，来源于 07-09-constructionobjects.js
+
+水泥搅拌机由我制作，选自 07-09-constructionobjects.js
+
+课程工作人员制作的秋千和环岛，选自 07-08-parkobjects.js
+
+我制作的汽车和卡车，选自 08-07-car.js
+
+房屋、联排别墅、现代别墅和树 由我制作，选自 08-06-buildings.js
+
+我制作的直升机和雷达，选自 07-06-01.js
